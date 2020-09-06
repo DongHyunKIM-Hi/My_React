@@ -1,6 +1,15 @@
 import React, {useRef, useState} from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
+function countActiveUsers(users){
+  console.log("사용자 수를 세는중");
+  return users.filter(user => user.active).length;
+}
+const initialState = {
+  inputs:{
+    usersname:
+  }
+}
 function App() {
   const [users, setUsers] = useState([
     {
@@ -73,6 +82,7 @@ function App() {
     onChange={onChange}
     onCreate={onCreate}/>
     <UserList users={users} onRemove={onRemove} onToggle={onToggle}/>
+ 
     </>
   );
 }
