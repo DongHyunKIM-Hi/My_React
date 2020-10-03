@@ -2,6 +2,7 @@ import React from "react";
 import Profile from "./Profile";
 import { Link, Route } from "react-router-dom";
 import WithRouterSample from "./WithRouterSample";
+import RouterHookSample from "./RouterHookSample";
 
 function Profiles() {
   return (
@@ -22,6 +23,7 @@ function Profiles() {
       ></Route>
       <Route path="/profiles/:username" component={Profile} />
       <WithRouterSample></WithRouterSample>
+      <RouterHookSample></RouterHookSample>
     </div>
   );
 }
