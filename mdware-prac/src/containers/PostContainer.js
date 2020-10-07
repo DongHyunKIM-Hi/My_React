@@ -9,6 +9,7 @@ function PostContainer({ postId }) {
 
   useEffect(() => {
     dispatch(getPost(postId));
+    return () => {};
   }, [postId, dispatch]);
 
   if (loading) return <div>로딩중...</div>;
