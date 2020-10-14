@@ -6,7 +6,7 @@ import {
   createPromiseThunkById,
   handleAsyncActionsById,
 } from "../lib/asyncUtils";
-
+import { call, put, takeEvery } from "redux-saga/effects";
 /* 액션 타입 */
 
 // 포스트 여러개 조회하기
@@ -19,10 +19,55 @@ const GET_POST = "GET_POST";
 const GET_POST_SUCCESS = "GET_POST_SUCCESS";
 const GET_POST_ERROR = "GET_POST_ERROR";
 
-// 아주 쉽게 thunk 함수를 만들 수 있게 되었습니다.
-export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
-export const getPost = createPromiseThunkById(GET_POST, postsAPI.getPostById);
+const CLEAR_POST = "CLEAR_POST";
 
+// 아주 쉽게 thunk 함수를 만들 수 있게 되었습니다.
+export const getPosts = () => ({ type: GET_POSTS });
+export const getPost = (id) => ({
+  type: GET_POST,
+  payload: id,
+  meta: id,
+});
+
+function* getPostsSaga() {
+  try {
+    const posts = yield call(postsAPI.getPosts);
+    yield put({
+      type: GET_POSTS_SUCCESS,
+      payload: posts,
+    });
+  } catch (e) {
+    yield put({
+      type: GET_POSTS_ERROR,
+      payload: e,
+      error: true,
+    });
+  }
+}
+
+function* getPostSaga(action) {
+  const id = action.payload;
+  try {
+    const post = yield call(postsAPI.getPostById, id);
+    yield put({
+      type: GET_POST_SUCCESS,
+      payload: post,
+      meta: id,
+    });
+  } catch (e) {
+    yield put({
+      type: GET_POST_ERROR,
+      payload: e,
+      error: true,
+      meta: id,
+    });
+  }
+}
+
+export function* postsSaga() {
+  yield takeEvery(GET_POSTS, getPostsSaga);
+  yield takeEvery(GET_POST, getPostSaga);
+}
 // 3번째 인자를 사용하면 withExtraArgument 에서 넣어준 값들을 사용 할 수 있습니다.
 export const goToHome = () => (dispatch, getState, { history }) => {
   history.push("/");
