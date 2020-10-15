@@ -8,3 +8,7 @@ let timeoutPromise = new Promise((resolve, reject)=>{
 })
 
 timeoutPromise.then(console.log);
+
+import add from './util';
+const value = add(1,2);
+console.log(value);

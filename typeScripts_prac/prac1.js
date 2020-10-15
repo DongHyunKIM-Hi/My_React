@@ -1,6 +1,8 @@
+"use strict";
+exports.__esModule = true;
 var test = "test";
-let test1 = 'test1';
-let timeoutPromise = new Promise((resolve, reject) => {
+var test1 = 'test1';
+var timeoutPromise = new Promise(function (resolve, reject) {
     setTimeout(("1 sec"));
 });
 {
@@ -9,3 +11,6 @@ let timeoutPromise = new Promise((resolve, reject) => {
 1000;
 ;
 timeoutPromise.then(console.log);
+var util_1 = require("./util");
+var value = util_1["default"](1, 2);
+console.log(value);
