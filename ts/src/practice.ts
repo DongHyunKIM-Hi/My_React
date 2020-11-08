@@ -1,34 +1,25 @@
-interface Shape{
-    getArea(): number;
-}
+class Queue<T>{
+    list: T[]=[];
 
-class Circle implements Shape{
-    radius: number;
+    get length(){
+        return this.list.length;
+    }
 
-    constructor(radius: number){
-        this.radius = radius;
+    enqueue(item: T ){
+        this.list.push(item);
     }
-    getArea(){
-        return this.radius * this.radius* Math.PI;
-    }
-}
 
-class React implements Shape{
-    width: number;
-    height: number;
-    constructor(width: number, height: number){
-        this.width = width;
-        this.height = height;
-    }
-    getArea(){
-        return this.width * this.height;
+    dequeue(){
+        return this.list.shift();
     }
 }
 
-const circle = new Circle(5);
-const react = new React(4,5);
-const shapes: Shape[] = [circle, react];
+const queue= new Queue<number>(); 
+queue.enqueue(1);
+queue.enqueue(2);
+queue.enqueue(3);
+queue.enqueue(4);
 
-shapes.forEach(me=>{
-    console.log(me.getArea());
-})
+while (queue.length >0) {
+    console.log(queue.dequeue())
+}
