@@ -1,11 +1,9 @@
+
 import React from 'react';
-import Greetings from './Gretting';
+import Counter from './conponents/Counter';
 
 
-function App() {
-  return (
-   <Greetings name="연습중"/>
-  );
+const App: React.FC = ()=>{
+  return <Counter/>
 }
-
 export default App;
