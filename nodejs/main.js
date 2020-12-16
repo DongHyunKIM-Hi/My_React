@@ -2,6 +2,23 @@ var http = require("http"); //http 모듈을 사용하겠다.
 var fs = require("fs"); // filesystem 모듈을 사용하겠다.
 var url = require("url"); // url 모듈을 사용하겠다.
 
+const templateHtml = (title, list) => {
+  return `  <!doctype html>
+                    <html>
+                    <head>
+                      <title>WEB1 - ${title}</title>
+                      <meta charset="utf-8">
+                    </head>
+                    <body>
+                      <h1><a href="/">WEB</a></h1>
+                      ${list}
+                      <h2>${title}</h2>
+                      <p>${discription}
+                      </p>
+                    </body>
+                    </html>`;
+};
+
 var app = http.createServer(function (request, response) {
   //서버를 만들겠다.
   var _url = request.url; //요청한 리퀘스트의 url 키의 값을 받아오겠다.
@@ -11,37 +28,37 @@ var app = http.createServer(function (request, response) {
   if (pathname === "/") {
     //pathname이 / 이면 실행
     if (queryData.id === undefined) {
-      var title = "Welcome test";
-      fs.readFile(`data/${queryData.id}`, "utf8", (err, discription) => {
-        // fs 모듈의 readFile을 사용 (파일의 위치, 파일의 형식, (에러가 나거나, 파일의 값)=>{실행}))
+      fs.readdir("./data", function (error, filelist) {
+        console.log(filelist);
+        var title = "Welcome test";
         var discription = "Hello nice to meet you";
-        var template = `
-                    <!doctype html>
-                  <html>
-                  <head>
-                    <title>WEB1 - ${title}</title>
-                    <meta charset="utf-8">
-                  </head>
-                  <body>
-                    <h1><a href="/">WEB</a></h1>
-                    <ol>
-                      <li><a href="/?id=HTML">HTML</a></li>
-                      <li><a href="/?id=CSS">CSS</a></li>
-                      <li><a href="/?id=js">JavaScript</a></li>
-                    </ol>
-                    <h2>${title}</h2>
-                    <p>${discription}
-                    </p>
-                  </body>
-                  </html>`;
+        var list = `<ul>`;
+        var i = 0;
+        while (i < filelist.length) {
+          list =
+            list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+          i = i + 1;
+        }
+        var template = templateHtml(title, list);
         response.writeHead(200); //서버 프로토콜 약속 200은 서버에 값이 잘 전달되었다.
         response.end(template); //컨텐츠 출력 완료 template를 출력하라
       });
     } else {
-      var title = queryData.id; // queryData 객체에서  id 값만 추출할게요 [object: {id: 어떤값}] => 어떤값
-      fs.readFile(`data/${queryData.id}`, "utf8", (err, discription) => {
-        // fs 모듈의 readFile을 사용 (파일의 위치, 파일의 형식, (에러가 나거나, 파일의 값)=>{실행}))
-        var template = `
+      fs.readdir("./data", function (error, filelist) {
+        console.log(filelist);
+        var title = "Welcome test";
+        var discription = "Hello nice to meet you";
+        var list = `<ul>`;
+        var i = 0;
+        while (i < filelist.length) {
+          list =
+            list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+          i = i + 1;
+        }
+        var title = queryData.id; // queryData 객체에서  id 값만 추출할게요 [object: {id: 어떤값}] => 어떤값
+        fs.readFile(`data/${queryData.id}`, "utf8", (err, discription) => {
+          // fs 모듈의 readFile을 사용 (파일의 위치, 파일의 형식, (에러가 나거나, 파일의 값)=>{실행}))
+          var template = `
                     <!doctype html>
                   <html>
                   <head>
@@ -60,8 +77,9 @@ var app = http.createServer(function (request, response) {
                     </p>
                   </body>
                   </html>`;
-        response.writeHead(200); //서버 프로토콜 약속 200은 서버에 값이 잘 전달되었다.
-        response.end(template); //컨텐츠 출력 완료 template를 출력하라
+          response.writeHead(200); //서버 프로토콜 약속 200은 서버에 값이 잘 전달되었다.
+          response.end(template); //컨텐츠 출력 완료 template를 출력하라
+        });
       });
     }
   } else {
