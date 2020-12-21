@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import "./styles.css";
 import Create from "./test1/Create";
 import UserList from "./test1/UserList";
@@ -32,13 +32,17 @@ export default function App() {
   ]);
 
   const nextId = useRef(4);
-  const onChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const onCreate = () => {
+  const onChange = useCallback(
+    (e) => {
+      console.log("dhkdndnasf");
+      setUser({
+        ...user,
+        [e.target.name]: e.target.value,
+      });
+    },
+    [user]
+  );
+  const onCreate = useCallback(() => {
     const input_user = {
       id: nextId.current,
       name,
@@ -52,16 +56,24 @@ export default function App() {
       age: "",
     });
     nextId.current += 1;
-  };
-  const onRemove = (id) => {
-    setUserList(users.filter((user) => user.id !== id));
-  };
+  }, [name, age, users, user]);
+  const onRemove = useCallback(
+    (id) => {
+      setUserList(users.filter((user) => user.id !== id));
+    },
+    [users]
+  );
 
-  const onToggle = (id) => {
-    setUserList(
-      users.map((user) => (user.id === id ? { ...user, act: !user.act } : user))
-    );
-  };
+  const onToggle = useCallback(
+    (id) => {
+      setUserList(
+        users.map((user) =>
+          user.id === id ? { ...user, act: !user.act } : user
+        )
+      );
+    },
+    [users]
+  );
 
   const countingAct = (users) => {
     console.log("세는중");

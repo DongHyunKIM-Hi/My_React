@@ -10,4 +10,4 @@ function Create({ nick, age, onCreate, onChange }) {
   );
 }
 
-export default Create;
+export default React.memo(Create);
