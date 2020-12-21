@@ -1,11 +1,16 @@
 import React from "react";
 
-function Create({ nick, age, onCreate, onChange }) {
+function Create({ username, age, inRoll, onChange }) {
   return (
     <div>
-      <input name="name" onChange={onChange} value={nick} placeholder="이름" />
+      <input
+        name="username"
+        onChange={onChange}
+        value={username}
+        placeholder="이름"
+      />
       <input name="age" onChange={onChange} value={age} placeholder="나이" />
-      <button onClick={onCreate}>등록</button>
+      <button onClick={inRoll}>등록</button>
     </div>
   );
 }
