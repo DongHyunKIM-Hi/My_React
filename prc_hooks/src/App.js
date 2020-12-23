@@ -4,26 +4,6 @@ import Create from "./test1/Create";
 import UserList from "./test1/UserList";
 
 export default function App() {
-  function reducer(state, action) {
-    switch (action.type) {
-      case "change":
-        return {
-          input: {
-            ...state.input,
-            [action.name]: action.value,
-          },
-        };
-      case "create":
-        return {
-          input: {
-            ...state.input,
-          },
-          users: state.users.concat(state.input),
-        };
-      default:
-        throw new Error("뭐가 틀린겨");
-    }
-  }
   const initialState = {
     input: {
       name: "",
@@ -42,21 +22,62 @@ export default function App() {
       },
     ],
   };
-
   const [state, dispatch] = useReducer(reducer, initialState);
   const { name, age } = state.input;
-  const { users } = state;
+  const { input, users } = state;
+  function reducer(state, action) {
+    switch (action.type) {
+      case "change":
+        return {
+          ...state,
+          input: {
+            ...state.input,
+            [action.name]: action.value,
+          },
+        };
+      case "create":
+        return {
+          ...state,
+          input: {
+            name: "",
+            age: "",
+          },
+          users: state.users.concat(action.input),
+        };
+      case "delete":
+        return {
+          ...state,
+          users: state.users.filter((user) => user.id !== action.id),
+        };
+      default:
+        throw new Error("뭐가 틀린겨");
+    }
+  }
+  const nextId = useRef(3);
   const onChange = (e) => {
     dispatch({
       type: "change",
       name: e.target.name,
       value: e.target.value,
     });
-    console.log(state.input);
+    console.log(state);
   };
   const onCreate = () => {
     dispatch({
       type: "create",
+      input: {
+        id: nextId.current,
+        name,
+        age,
+      },
+    });
+    nextId.current += 1;
+  };
+  const onRemove = (id) => {
+    console.log(id);
+    dispatch({
+      type: "delete",
+      id,
     });
   };
   return (
@@ -64,6 +85,12 @@ export default function App() {
       <input placeholder="이름" name="name" value={name} onChange={onChange} />
       <input placeholder="나이" name="age" value={age} onChange={onChange} />
       <button onClick={onCreate}>등록하기</button>
+      {users.map((user) => (
+        <div>
+          {user.name} {user.age}
+          <button onClick={() => onRemove(user.id)}>삭제</button>
+        </div>
+      ))}
     </>
   );
 }
