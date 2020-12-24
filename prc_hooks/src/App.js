@@ -14,11 +14,13 @@ export default function App() {
         id: 1,
         name: "Viva",
         age: "25",
+        act: true,
       },
       {
         id: 2,
         name: "la",
         age: "20",
+        act: true,
       },
     ],
   };
@@ -49,6 +51,13 @@ export default function App() {
           ...state,
           users: state.users.filter((user) => user.id !== action.id),
         };
+      case "toggle":
+        return {
+          ...state,
+          users: state.users.map((user) =>
+            user.id === action.id ? { ...user, act: !user.act } : user
+          ),
+        };
       default:
         throw new Error("뭐가 틀린겨");
     }
@@ -69,6 +78,7 @@ export default function App() {
         id: nextId.current,
         name,
         age,
+        act: true,
       },
     });
     nextId.current += 1;
@@ -80,14 +90,26 @@ export default function App() {
       id,
     });
   };
+  const onToggle = (id) => {
+    dispatch({
+      type: "toggle",
+      id,
+    });
+    console.log(state);
+  };
   return (
     <>
       <input placeholder="이름" name="name" value={name} onChange={onChange} />
       <input placeholder="나이" name="age" value={age} onChange={onChange} />
       <button onClick={onCreate}>등록하기</button>
       {users.map((user) => (
-        <div>
-          {user.name} {user.age}
+        <div key={user.id}>
+          <span
+            onClick={() => onToggle(user.id)}
+            style={{ color: user.act ? "black" : "pink" }}
+          >
+            {user.name} {user.age}
+          </span>
           <button onClick={() => onRemove(user.id)}>삭제</button>
         </div>
       ))}
