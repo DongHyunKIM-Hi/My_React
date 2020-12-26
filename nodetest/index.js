@@ -7,6 +7,10 @@ app.use((req, res) => {
   res.end("<h1>익스프레스 서버에서 응답한 메세지입니다.</h1>");
 });
 
+app.get("/test", (req, res) => {
+  res.send("Hello World!");
+});
+
 app.listen(port, () => {
   // 이런 포트번호로 연결하겠다.
   console.log(`${port} 포트로 서버 실행중...`);
