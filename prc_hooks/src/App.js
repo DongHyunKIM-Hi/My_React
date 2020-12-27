@@ -2,9 +2,9 @@ import React, { useReducer, createContext } from "react";
 import "./styles.css";
 import Create from "./test1/Create";
 import UserList from "./test1/UserList";
-
+import produce from "immer";
 export const UserDispatch = createContext(null);
-
+window.produce = produce;
 export default function App() {
   const initialState = {
     users: [
