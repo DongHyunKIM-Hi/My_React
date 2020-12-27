@@ -1,14 +1,11 @@
 import React, { useRef, useReducer } from "react";
+import useInput from "./custom/useInput";
 import "./styles.css";
 import Create from "./test1/Create";
 import UserList from "./test1/UserList";
 
 export default function App() {
   const initialState = {
-    input: {
-      name: "",
-      age: "",
-    },
     users: [
       {
         id: 1,
@@ -25,25 +22,17 @@ export default function App() {
     ],
   };
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { name, age } = state.input;
-  const { input, users } = state;
+  const { users } = state;
+  const [form, onChange, reset] = useInput({
+    name: "",
+    age: "",
+  });
+  const { name, age } = form;
   function reducer(state, action) {
     switch (action.type) {
-      case "change":
-        return {
-          ...state,
-          input: {
-            ...state.input,
-            [action.name]: action.value,
-          },
-        };
       case "create":
         return {
           ...state,
-          input: {
-            name: "",
-            age: "",
-          },
           users: state.users.concat(action.input),
         };
       case "delete":
@@ -63,14 +52,6 @@ export default function App() {
     }
   }
   const nextId = useRef(3);
-  const onChange = (e) => {
-    dispatch({
-      type: "change",
-      name: e.target.name,
-      value: e.target.value,
-    });
-    console.log(state);
-  };
   const onCreate = () => {
     dispatch({
       type: "create",
@@ -81,6 +62,7 @@ export default function App() {
         act: true,
       },
     });
+    reset();
     nextId.current += 1;
   };
   const onRemove = (id) => {
