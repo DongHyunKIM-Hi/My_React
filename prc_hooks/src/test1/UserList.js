@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserDispatch } from "../App";
 
-function UserList({ users, reMove, onToggle }) {
+function UserList({ users }) {
+  const dispatch = useContext(UserDispatch);
   return (
     <div>
       {users.map((user) => (
         <div key={user.id}>
-          <b style={{ color: user.active ? "green" : "gray" }}>
-            <span onClick={() => onToggle(user.id)}>{user.username}</span>
-            <span>({user.age})</span>
-          </b>
-          <button onClick={() => reMove(user.id)}>삭제</button>
+          {user.name} {user.age}{" "}
+          <button
+            onClick={() =>
+              dispatch({
+                type: "delete",
+                id: user.id,
+              })
+            }
+          >
+            삭제
+          </button>
         </div>
       ))}
     </div>

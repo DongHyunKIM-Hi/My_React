@@ -1,16 +1,35 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
+import { UserDispatch } from "../App";
+import useInput from "../custom/useInput";
 
-function Create({ username, age, inRoll, onChange }) {
+function Create() {
+  const dispatch = useContext(UserDispatch);
+  const [form, onChange, reset] = useInput({
+    name: "",
+    age: "",
+  });
+  const nextId = useRef(3);
+
+  const { name, age } = form;
   return (
     <div>
-      <input
-        name="username"
-        onChange={onChange}
-        value={username}
-        placeholder="이름"
-      />
-      <input name="age" onChange={onChange} value={age} placeholder="나이" />
-      <button onClick={inRoll}>등록</button>
+      <input name="name" value={name} onChange={onChange} />
+      <input name="age" value={age} onChange={onChange} />
+      <button
+        onClick={() => {
+          dispatch({
+            type: "create",
+            input: {
+              id: nextId.current,
+              name: name,
+              age: age,
+              act: true,
+            },
+          });
+        }}
+      >
+        등록
+      </button>
     </div>
   );
 }
