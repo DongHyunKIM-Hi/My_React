@@ -3,6 +3,8 @@ import "./styles.css";
 import Create from "./test1/Create";
 import UserList from "./test1/UserList";
 import produce from "immer";
+import styled from "styled-components";
+import Button from "./styled/Button";
 export const UserDispatch = createContext(null);
 window.produce = produce;
 export default function App() {
@@ -24,7 +26,13 @@ export default function App() {
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   const { users } = state;
-
+  const AppBlock = styled.div`
+    width: 512px;
+    margin: 0 auto;
+    margin-top: 4rem;
+    border: 1px solid black;
+    padding: 1rem;
+  `;
   function reducer(state, action) {
     switch (action.type) {
       case "create":
@@ -50,9 +58,14 @@ export default function App() {
   }
 
   return (
-    <UserDispatch.Provider value={dispatch}>
-      <Create />
-      <UserList users={users} />
-    </UserDispatch.Provider>
+    <>
+      <UserDispatch.Provider value={dispatch}>
+        <Create />
+        <UserList users={users} />
+      </UserDispatch.Provider>
+      <AppBlock>
+        <Button>sad</Button>
+      </AppBlock>
+    </>
   );
 }
