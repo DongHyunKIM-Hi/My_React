@@ -1,8 +1,12 @@
-import logo from "./logo.svg";
-import "./App.css";
+import React from "react";
+import CounterContainer from "./Container/CounterContainer";
 
 function App() {
-  return <div>h2</div>;
+  return (
+    <div>
+      <CounterContainer />
+    </div>
+  );
 }
 
 export default App;
