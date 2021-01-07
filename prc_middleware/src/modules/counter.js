@@ -8,6 +8,18 @@ const initial = {
   number: 4,
 };
 
+export const increaseAsync = () => (dispatch) => {
+  setTimeout(() => {
+    dispatch(onIncrease());
+  }, 1000);
+};
+
+export const decreaseAsync = () => (dispatch) => {
+  setTimeout(() => {
+    dispatch(onDecrease());
+  }, 1000);
+};
+
 export default function counter(state = initial, action) {
   switch (action.type) {
     case INCREASE:
