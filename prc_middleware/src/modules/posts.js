@@ -1,4 +1,5 @@
 import * as postsApi from "../api/posts";
+import { reducerUtils } from "../lib/asyncUtils";
 
 const GET_POST = "posts/get_post";
 const GET_POST_SUCCESS = "posts/get_post_success";
@@ -33,69 +34,37 @@ export default function posts(state = postState, action) {
     case GET_POST:
       return {
         ...state,
-        post: {
-          loading: true,
-          data: null,
-          error: null,
-        },
+        post: reducerUtils.loading(state.post.data),
       };
     case GET_POST_SUCCESS:
       return {
         ...state,
-        post: {
-          loading: false,
-          data: action.post,
-          error: null,
-        },
+        post: reducerUtils.success(action.post),
       };
     case GET_POST_ERROR:
       return {
         ...state,
-        post: {
-          loading: false,
-          data: null,
-          error: action.error,
-        },
+        post: reducerUtils.error(action.error),
       };
     case GET_POSTS:
       return {
         ...state,
-        posts: {
-          loading: true,
-          data: null,
-          error: null,
-        },
+        posts: reducerUtils.loading(state.posts.data),
       };
     case GET_POSTS_SUCCESS:
       return {
         ...state,
-        posts: {
-          loading: false,
-          data: action.post,
-          error: null,
-        },
+        posts: reducerUtils.success(action.posts),
       };
     case GET_POSTS_ERROR:
       return {
         ...state,
-        posts: {
-          loading: false,
-          data: null,
-          error: action.error,
-        },
+        posts: reducerUtils.error(action.error),
       };
   }
 }
 
 const postState = {
-  posts: {
-    loading: false,
-    data: null,
-    error: null,
-  },
-  post: {
-    loading: false,
-    data: null,
-    error: null,
-  },
+  posts: reducerUtils.initial(),
+  post: reducerUtils.initial(),
 };
