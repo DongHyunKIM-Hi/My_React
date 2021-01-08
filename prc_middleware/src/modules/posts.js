@@ -12,7 +12,7 @@ const GET_POSTS_ERROR = "posts/get_posts_error";
 export const getPosts = () => async (dispatch) => {
   dispatch({ type: GET_POSTS });
   try {
-    const posts = await postsApi.getPosts;
+    const posts = await postsApi.getPosts();
     dispatch({ type: GET_POSTS_SUCCESS, posts });
   } catch (e) {
     dispatch({ type: GET_POSTS_ERROR, error: e });
@@ -61,6 +61,8 @@ export default function posts(state = postState, action) {
         ...state,
         posts: reducerUtils.error(action.error),
       };
+    default:
+      return state;
   }
 }
 
