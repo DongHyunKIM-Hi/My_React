@@ -7,9 +7,10 @@ export default function PostListContainer() {
   const { data, loading, error } = useSelector((state) => state.posts.posts);
   const dispatch = useDispatch();
   useEffect(() => {
+    if (data) return;
     dispatch(getPosts());
     console.log(data);
-  }, []);
+  }, [data, dispatch]);
 
   if (loading) {
     return <div>로딩중...</div>;

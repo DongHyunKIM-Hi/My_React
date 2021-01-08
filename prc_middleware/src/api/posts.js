@@ -1,24 +1,11 @@
-const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
-
-const posts = [
-  {
-    id: 1,
-    title: "만들어보기",
-    body: "이렇게 만들어 볼까요?",
-  },
-  {
-    id: 2,
-    title: "42seoul",
-    body: "42seoul 선착순 ㅠㅠ",
-  },
-];
+import axios from "axios";
 
 export const getPost = async (id) => {
-  await sleep(500);
-  return posts.find((post) => post.id == id);
+  const response = await axios.get(`/posts/${id}`);
+  return response.data;
 };
 
 export const getPosts = async () => {
-  await sleep(500);
-  return posts;
+  const response = await axios.get("/posts");
+  return response.data;
 };
